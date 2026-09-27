@@ -1,0 +1,25 @@
+services:
+  # Backend API — The Golden Age Archive
+  - type: web
+    name: golden-age-archive-api
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      # Set this to your MongoDB Atlas connection string in the Render dashboard:
+      - key: MONGODB_URI
+        sync: false
+
+  # Frontend SPA — The Golden Age Archive (Vite build served as static site)
+  - type: static
+    name: golden-age-archive-web
+    rootDir: client
+    buildCommand: npm ci && npm run build
+    publishPath: dist
