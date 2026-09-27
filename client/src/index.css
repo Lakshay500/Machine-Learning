@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Vintage base ---------- */
+body {
+  @apply bg-parchment text-ink font-body;
+}
+
+/* Film grain / paper noise overlay fixed over the entire viewport */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Record sleeve cards with ring wear ---------- */
+.record-sleeve {
+  position: relative;
+  background: linear-gradient(145deg, #efe4d8, #e2d2bf);
+  border: 1px solid rgba(92, 85, 79, 0.25);
+  box-shadow: 2px 3px 0 rgba(44, 42, 41, 0.12), 6px 8px 18px rgba(44, 42, 41, 0.15);
+  overflow: hidden;
+}
+.record-sleeve::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 50% 45%, transparent 54%, rgba(44, 42, 41, 0.06) 55.5%, transparent 58%),
+    radial-gradient(circle at 50% 45%, transparent 66%, rgba(44, 42, 41, 0.04) 67%, transparent 69%);
+}
+.record-sleeve:hover {
+  transform: translateY(-3px) rotate(-0.3deg);
+  transition: transform 0.25s ease;
+}
+
+/* Sepia-toned images with vignette */
+.vintage-img {
+  filter: sepia(0.35) saturate(0.8) contrast(0.95);
+}
+.vignette {
+  position: relative;
+}
+.vignette::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 60px rgba(26, 26, 26, 0.35);
+}
+
+/* ---------- Pill buttons ---------- */
+.btn-pill {
+  @apply inline-block rounded-full px-6 py-2 font-mono text-sm tracking-wide shadow-md transition-transform active:scale-95;
+}
+.btn-primary {
+  @apply btn-pill bg-oxblood text-parchment hover:bg-[#a04545];
+}
+.btn-gold {
+  @apply btn-pill bg-gold text-radio hover:brightness-110;
+}
+.btn-outline {
+  @apply btn-pill border border-sepia text-sepia hover:bg-linen;
+}
+
+/* ---------- Rotary volume knob ---------- */
+.knob {
+  --angle: 0deg;
+  width: 44px;
+  height: 44px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 35% 30%, #3a3a3a, #111 70%);
+  border: 2px solid #D4AF37;
+  position: relative;
+  cursor: ns-resize;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.15);
+}
+.knob::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 3px;
+  height: 12px;
+  background: #D4AF37;
+  border-radius: 2px;
+  transform-origin: 50% 18px;
+  transform: translateX(-50%) rotate(var(--angle));
+}
+
+/* ---------- Radio dial seek bar ---------- */
+.radio-dial {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #D4AF37 var(--fill, 0%), #3a3a3a var(--fill, 0%));
+  outline: none;
+  cursor: pointer;
+}
+.radio-dial::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #F4ECE6;
+  border: 2px solid #D4AF37;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+}
+.radio-dial::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #F4ECE6;
+  border: 2px solid #D4AF37;
+}
+
+/* ---------- Time Machine slider ---------- */
+.time-machine {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: repeating-linear-gradient(
+    to right,
+    #8B3A3A 0 2px,
+    transparent 2px 10%
+  ), #E8D8C8;
+  border: 1px solid #5C554F;
+  outline: none;
+  cursor: ew-resize;
+}
+.time-machine::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f0d878, #D4AF37 70%);
+  border: 2px solid #2C2A29;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+.time-machine::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #D4AF37;
+  border: 2px solid #2C2A29;
+}
+
+/* Spinning vinyl while playing */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.vinyl-spin {
+  animation: spin 4s linear infinite;
+}
+.vinyl-spin.paused {
+  animation-play-state: paused;
+}
+
+/* Typewriter metadata look */
+.typeline {
+  @apply font-mono text-xs text-sepia tracking-tight;
+}
+
+/* Ticker for historical trivia */
+@keyframes ticker {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+.ticker-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 22s linear infinite;
+}
